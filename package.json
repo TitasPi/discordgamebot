@@ -1,0 +1,18 @@
+{
+  "name": "discord_game_bot",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Titas",
+  "license": "ISC",
+  "dependencies": {
+    "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.15.0",
+    "sqlite3": "^5.0.0"
+  }
+}
