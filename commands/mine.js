@@ -23,24 +23,24 @@ module.exports = async function(message, Users, CurrencyShop, timestamps, now, c
     const minedItemQuantity = random(1, 3);
     const minedXP = minedItemQuantity * random(1, 2);
     switch (minedItem) {
-    case 1:
-        minedItem = 'Coal';
-        minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
-        break;
-    case 2:
-        minedItem = 'Iron Ore';
-        minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
-        break;
-    case 3:
-        minedItem = 'Copper Ore';
-        minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
-        break;
-    case 4:
-        minedItem = 'Gold Ore';
-        minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
-        break;
-    default:
-        break;
+        case 1:
+            minedItem = 'Coal';
+            minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
+            break;
+        case 2:
+            minedItem = 'Iron Ore';
+            minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
+            break;
+        case 3:
+            minedItem = 'Copper Ore';
+            minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
+            break;
+        case 4:
+            minedItem = 'Gold Ore';
+            minedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: minedItem } } });
+            break;
+        default:
+            break;
     }
     await user.addItem(minedItem, minedItemQuantity);
     user.mining_skill += minedXP;

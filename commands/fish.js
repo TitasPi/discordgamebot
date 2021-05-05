@@ -32,37 +32,37 @@ module.exports = async function(message, Users, CurrencyShop, timestamps, now, c
     const fishedItemQuantity = random(1, 3);
     const fishedXP = fishedItemQuantity * random(1, 2);
     switch (fishedItem) {
-    case 0:
-        fishedItem = '👠 Shoe';
-        fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
-        user.addItem(fishedItem);
-        return message.channel.send(new Discord.MessageEmbed().setTitle('🎣 Fishing 🎣').setDescription(`You have caught **${fishedItem.name}**`));
-    case 1:
-        fishedItem = 'Raw Cod';
-        fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
-        break;
-    case 2:
-        fishedItem = 'Raw Salmon';
-        fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
-        break;
-    case 3:
-        fishedItem = 'Raw Carp';
-        fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
-        break;
-    case 4:
-        fishedItem = 'Raw Mackerel';
-        fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
-        break;
-    case 5:
-        fishedItem = 'Raw Herring';
-        fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
-        break;
-    case 6:
-        fishedItem = 'Raw Trout';
-        fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
-        break;
-    default:
-        break;
+        case 0:
+            fishedItem = '👠 Shoe';
+            fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
+            user.addItem(fishedItem);
+            return message.channel.send(new Discord.MessageEmbed().setTitle('🎣 Fishing 🎣').setDescription(`You have caught **${fishedItem.name}**`));
+        case 1:
+            fishedItem = 'Raw Cod';
+            fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
+            break;
+        case 2:
+            fishedItem = 'Raw Salmon';
+            fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
+            break;
+        case 3:
+            fishedItem = 'Raw Carp';
+            fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
+            break;
+        case 4:
+            fishedItem = 'Raw Mackerel';
+            fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
+            break;
+        case 5:
+            fishedItem = 'Raw Herring';
+            fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
+            break;
+        case 6:
+            fishedItem = 'Raw Trout';
+            fishedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: fishedItem } } });
+            break;
+        default:
+            break;
     }
     await user.addItem(fishedItem, fishedItemQuantity);
     user.fishing_skill += fishedXP;

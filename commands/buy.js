@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { Op } = require('sequelize');
-const Utils = require('../utils');
+const { getItemName } = require('../utils');
 
 module.exports = async function(message, currency, commandArgs, CurrencyShop, Users) {
     let item = '';
@@ -21,7 +21,7 @@ module.exports = async function(message, currency, commandArgs, CurrencyShop, Us
         return message.channel.send(new Discord.MessageEmbed().setTitle('Shop').setDescription(`You don't have enough currency, ${message.author}`));
     }
     if (item.stock == 0) {
-        return message.channel.send(new Discord.MessageEmbed().setTitle('Shop').setDescription(`${Utils.getItemName(item)} is out of stock`));
+        return message.channel.send(new Discord.MessageEmbed().setTitle('Shop').setDescription(`${getItemName(item)} is out of stock`));
     }
     item.stock -= 1;
     item.save();
@@ -30,5 +30,5 @@ module.exports = async function(message, currency, commandArgs, CurrencyShop, Us
     currency.add(message.author.id, -item.buyPrice);
     await user.addItem(item);
 
-    message.channel.send(new Discord.MessageEmbed().setTitle('Shop').setDescription(`You've bought 1x ${Utils.getItemName(item)}`));
+    message.channel.send(new Discord.MessageEmbed().setTitle('Shop').setDescription(`You've bought 1x ${getItemName(item)}`));
 };

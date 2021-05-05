@@ -15,26 +15,26 @@ module.exports = async function(message, Users, CurrencyShop, commandArgs) {
         }
         let fishItem;
         switch (item.name) {
-        case 'Raw Cod':
-            fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Cod' } } });
-            break;
-        case 'Raw Salmon':
-            fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Salmon' } } });
-            break;
-        case 'Raw Carp':
-            fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Carp' } } });
-            break;
-        case 'Raw Mackerel':
-            fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Mackerel' } } });
-            break;
-        case 'Raw Herring':
-            fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Herring' } } });
-            break;
-        case 'Raw Trout':
-            fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Trout' } } });
-            break;
-        default:
-            break;
+            case 'Raw Cod':
+                fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Cod' } } });
+                break;
+            case 'Raw Salmon':
+                fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Salmon' } } });
+                break;
+            case 'Raw Carp':
+                fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Carp' } } });
+                break;
+            case 'Raw Mackerel':
+                fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Mackerel' } } });
+                break;
+            case 'Raw Herring':
+                fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Herring' } } });
+                break;
+            case 'Raw Trout':
+                fishItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: '🐟 Cooked Trout' } } });
+                break;
+            default:
+                break;
         }
         await user.removeItem(item);
         await user.removeItem(woodItem);

@@ -23,24 +23,24 @@ module.exports = async function(message, Users, CurrencyShop, timestamps, now, c
     const choppedItemQuantity = random(1, 3);
     const choppedXP = choppedItemQuantity * random(1, 2);
     switch (choppedItem) {
-    case 1:
-        choppedItem = 'Oak Log';
-        choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
-        break;
-    case 2:
-        choppedItem = 'Birch Log';
-        choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
-        break;
-    case 3:
-        choppedItem = 'Willow Log';
-        choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
-        break;
-    case 4:
-        choppedItem = 'Maple Log';
-        choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
-        break;
-    default:
-        break;
+        case 1:
+            choppedItem = 'Oak Log';
+            choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
+            break;
+        case 2:
+            choppedItem = 'Birch Log';
+            choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
+            break;
+        case 3:
+            choppedItem = 'Willow Log';
+            choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
+            break;
+        case 4:
+            choppedItem = 'Maple Log';
+            choppedItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: choppedItem } } });
+            break;
+        default:
+            break;
     }
     timestamps.set(message.author.id, now);
     setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);

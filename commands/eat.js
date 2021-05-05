@@ -4,12 +4,6 @@ const { Op } = require('sequelize');
 
 module.exports = async function(message, Users, commandArgs, UserItems, CurrencyShop) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
-    // const foodItem = await CurrencyShop.findOne({
-    // 	where: {
-    // 		name: { [Op.like]: `%${commandArgs}%` },
-    // 		category: { [Op.like]: 'Food' }
-    // 	},
-    // });
     const foodItem = await UserItems.findOne({
         where: {
             user_id: message.author.id,

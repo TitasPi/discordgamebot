@@ -14,17 +14,17 @@ module.exports = async function(message, Users, CurrencyShop, commandArgs) {
         }
         let ingotItem;
         switch (item.name) {
-        case 'Iron Ore':
-            ingotItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Ingot' } } });
-            break;
-        case 'Copper Ore':
-            ingotItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Copper Ingot' } } });
-            break;
-        case 'Gold Ore':
-            ingotItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Gold Ingot' } } });
-            break;
-        default:
-            break;
+            case 'Iron Ore':
+                ingotItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Ingot' } } });
+                break;
+            case 'Copper Ore':
+                ingotItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Copper Ingot' } } });
+                break;
+            case 'Gold Ore':
+                ingotItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Gold Ingot' } } });
+                break;
+            default:
+                break;
         }
         await user.removeItem(item);
         await user.removeItem(coalItem);

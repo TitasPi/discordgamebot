@@ -32,6 +32,7 @@ const EatCommand = require('./commands/eat');
 const AttackCommand = require('./commands/attack');
 
 const { random } = require('./utils');
+const Embeds = require('./embeds');
 
 const client = new Discord.Client();
 const { Users, CurrencyShop, HouseShop, UserItems, Enemies } = require('./dbObjects');
@@ -96,6 +97,7 @@ client.once('ready', async () => {
 
 client.on('message', async message => {
     if (message.author.bot) return;
+    // Making sure user has account
     currency.add(message.author.id, 0);
 
     if (!message.content.startsWith(PREFIX)) return;
@@ -111,11 +113,16 @@ client.on('message', async message => {
     const timestamps = cooldowns.get(command);
     let cooldownAmount = (3) * 1000;
 
-    if(command === 'mine' || command === 'chop' || command === 'fish' || command === 'attack') {
-        cooldownAmount = (10) * 1000 * 60;
-    }
-    if(command === 'loot') {
-        cooldownAmount = (5) * 1000 * 60;
+    switch (command) {
+        case 'mine':
+        case 'chop':
+        case 'fish':
+        case 'attack':
+            cooldownAmount = (10) * 1000 * 60;
+            break;
+        case 'loot':
+            cooldownAmount = (5) * 1000 * 60;
+            break;
     }
 
     if (timestamps.has(message.author.id)) {
@@ -133,7 +140,7 @@ client.on('message', async message => {
                 time = 'h';
             }
 
-            return message.channel.send(new Discord.MessageEmbed().setTitle('Please wait').setDescription(`${message.author}, please wait ${timeLeft.toFixed(1)}${time} before reusing the \`${command}\` command.`));
+            return message.channel.send(Embeds.pleaseWait(message, timeLeft, time, command));
         }
     }
 
