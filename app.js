@@ -31,11 +31,14 @@ const CraftingCommand = require('./commands/crafting');
 const EatCommand = require('./commands/eat');
 const AttackCommand = require('./commands/attack');
 
+const { random } = require('./utils');
+
 const client = new Discord.Client();
 const { Users, CurrencyShop, HouseShop, UserItems, Enemies } = require('./dbObjects');
 const currency = new Discord.Collection();
 const PREFIX = config.prefix;
 const cooldowns = new Discord.Collection();
+const shopRandomizasion = false;
 
 
 Reflect.defineProperty(currency, 'add', {
@@ -64,25 +67,31 @@ client.once('ready', async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => currency.set(b.user_id, b));
     console.log(`Logged in as ${client.user.tag}!`);
-    // eslint-disable-next-line no-unused-vars
-    // const stockRefresh = setInterval(async function() {
-    // 	console.log('Restocking stock!');
-    // 	const currencyShopItems = await CurrencyShop.findAll();
-    // 	currencyShopItems.forEach(i => {
-    // 		if(i.buyable === 1 && i.category === 'Food') {
-    // 			i.stock = random(5, 10);
-    // 			i.save();
-    // 		}
-    // 	});
-    // 	const houseShopItems = await HouseShop.findAll();
-    // 	houseShopItems.forEach(i => {
-    // 		if(i.buyable == 1) {
-    // 			i.stock = random(5, 10);
-    // 			i.save();
-    // 		}
-    // 	});
-    // }, 1000 * 60 * 1);
-    // Five minutes
+
+    if(shopRandomizasion) {
+        /**
+         * Shop stock refresh funciton
+         */
+        // eslint-disable-next-line no-unused-vars
+        const stockRefresh = setInterval(async function() {
+            console.log('Restocking stock!');
+            const currencyShopItems = await CurrencyShop.findAll();
+            currencyShopItems.forEach(i => {
+                if(i.buyable === 1 && i.category === 'Food') {
+                    i.stock = random(5, 10);
+                    i.save();
+                }
+            });
+            const houseShopItems = await HouseShop.findAll();
+            houseShopItems.forEach(i => {
+                if(i.buyable == 1) {
+                    i.stock = random(5, 10);
+                    i.save();
+                }
+            });
+        }, 1000 * 60 * 1);
+        // Five minutes
+    }
 });
 
 client.on('message', async message => {
