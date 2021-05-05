@@ -2,6 +2,7 @@
  * Calculates and returns skill level
  * @param {String} skill Woodcutting, Mining, Fishing, Smithing, Cooking, Crafting, Attack, Hitpoints
  * @param {Number} xp Skill xp
+ * @returns {Number} Skill level
  */
 exports.getSkillLevel = function(skill, xp) {
     let level = 1;
@@ -28,12 +29,22 @@ exports.getSkillLevel = function(skill, xp) {
     }
 };
 
+/**
+ * Calculates and returns user max HP
+ * @param {Number} level User level
+ * @returns {Number} Max health
+ */
 exports.getMaxHP = function(level) {
     let health = 9;
     health += level;
     return health;
 };
 
+/**
+ * Returns item's display name
+ * @param {Item} item
+ * @returns {String} Item's display name
+ */
 exports.getItemName = function(item) {
     switch (item.category) {
     case 'Mining':
