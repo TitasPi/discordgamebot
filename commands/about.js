@@ -4,7 +4,7 @@ const { getMaxHP, getSkillLevel } = require('../utils');
 module.exports = async function(Users, message, currency) {
     const target = message.mentions.users.first() || message.author;
     const user = await Users.findOne({ where: { user_id: target.id } });
-    let house = '';
+    let house = 'Homeless';
     let health = 10;
     let woodcutting_skillXP = 0;
     let mining_skillXP = 0;
@@ -14,10 +14,7 @@ module.exports = async function(Users, message, currency) {
     let crafting_skillXP = 0;
     let attack_skillXP = 0;
     let hitpoint_skillXP = 0;
-    if(!user) {
-        house = 'Homeless';
-    }
-    else {
+    if(user) {
         house = user.house;
         health = user.health;
         woodcutting_skillXP = user.woodcutting_skill;
@@ -34,7 +31,7 @@ module.exports = async function(Users, message, currency) {
     aboutUser.addField(`Information about ${target.tag}`, '\u200b');
     aboutUser.addField(':coin: Coins', `${currency.getBalance(target.id)} :coin:`, true);
     aboutUser.addField('❤ Health', `${health}/${getMaxHP(getSkillLevel('Hitpoints', hitpoint_skillXP))}`, true);
-    aboutUser.addField('Skils', '\u200b');
+    aboutUser.addField('Skills', '\u200b');
     aboutUser.addField('⛏ Mining', `${mining_skillXP}XP | ${getSkillLevel('Mining', mining_skillXP)} Level`, true);
     aboutUser.addField('🪓 Woodcutting', `${woodcutting_skillXP}XP | ${getSkillLevel('Woodcutting', woodcutting_skillXP)} Level`, true);
     aboutUser.addField('🎣 Fishing', `${fishing_skillXP}XP | ${getSkillLevel('Fishing', fishing_skillXP)} Level`, true);
