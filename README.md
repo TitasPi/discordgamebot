@@ -1,3 +1,10 @@
+<p>
+<a href="https://github.com/TitasPi/discordgamebot/issues"><img src="https://img.shields.io/github/issues/TitasPi/discordgamebot?style=for-the-badge" alt="Issues"></a>
+<a href="https://github.com/TitasPi/discordgamebot"><img src="https://img.shields.io/codefactor/grade/github/TitasPi/discordgamebot/master?style=for-the-badge" alt="Code Quality"></a>
+<a href="https://github.com/TitasPi/discordgamebot"><img src="https://img.shields.io/github/package-json/v/TitasPi/discordgamebot?style=for-the-badge" alt="Version"></a>
+
+</p>
+
 # DiscordGameBot (DGB)
 ## _Quite the unique game on Discord_
 
@@ -19,7 +26,7 @@ DBG uses a number of open source projects to work properly:
 - [Express] - fast node.js network app framework
 - [Discord.js] - powerfull node.js module that allows to communicate with Discord API
 
-And of course DGB itself is open source with a [public repository][dill] on GitLab.
+And of course DGB itself is open source with a [public repository][GitHub] on GitHub.
 
 ## Installation
 
@@ -39,7 +46,7 @@ DBG currently does not have plugins system implimented yet, but we are working o
 
 ## Docker
 
-Dillinger currently does not support Docker installation, but we are working on implementing it before full release.
+DBG currently does not support Docker installation, but we are working on implementing it before full release.
 
 ## License
 
@@ -52,4 +59,4 @@ GNU GPLv3
    [node.js]: <https://nodejs.org>
    [express]: <https://expressjs.com>
    [Discord.js]: <https://discord.js.org>
-   [dill]: <https://gitlab.com/TitasNxLT/discordgamebot>
+   [GitHub]: <https://github.com/TitasPi/discordgamebot>
