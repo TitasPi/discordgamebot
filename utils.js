@@ -65,6 +65,12 @@ exports.getItemName = function(item) {
     }
 };
 
+/**
+ * Returns random number
+ * @param {Number} min minimum number
+ * @param {Number} max maximum number
+ * @returns {Number} Item's display name
+ */
 exports.random = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
