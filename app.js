@@ -117,7 +117,7 @@ client.on('message', async message => {
 
     try {
         Logger.cmd(`${message.author.tag} executed '${commandName}' command`);
-        Commands.get(commandName).execute(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client);
+        command.execute(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client);
     }
     catch(error) {
         Logger.error(`Caught error while executing '${commandName}' command: ${error}`);

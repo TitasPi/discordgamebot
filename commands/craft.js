@@ -14,120 +14,38 @@ exports.execute = async function(message, commandArgs, Users, Enemies, UserItems
         item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` } } });
     }
     if (!item) return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription('That item doesn\'t exist.'));
-    if(item.name === 'Iron Axe') {
-        const user = await Users.findOne({ where: { user_id: message.author.id } });
-        const ironItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Ingot' } } });
-        const userItem1 = await user.hasItem(ironItem, 2);
+
+    const user = await Users.findOne({ where: { user_id: message.author.id } });
+
+    if(item.name === 'Iron Axe' || item.name === 'Iron Pickaxe' || item.name === 'Copper Axe' || item.name === 'Copper Pickaxe') {
+        const metalItem = await getMetalItem(CurrencyShop, item.name);
+        const userMetalItem = await user.hasItem(metalItem, 2);
         const logItem = await user.getUserLogs();
         const woodItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: logItem } } });
-        const userItem2 = await user.hasItem(woodItem);
+        const userWoodItem = await user.hasItem(woodItem);
         let missing = '';
-        if(userItem1 && !userItem2) {
-            missing += '1x Log';
+        if(userMetalItem && !userWoodItem) {
+            missing = '1x Log';
         }
-        else if(!userItem1 && !userItem2) {
-            missing += `1x Log, 2x ${ironItem.name}`;
+        else if(!userMetalItem && !userWoodItem) {
+            missing = `1x Log, 2x ${metalItem.name}`;
         }
-        else if(!userItem1) {
-            missing += `2x ${ironItem.name}`;
+        else if(!userMetalItem && userWoodItem) {
+            missing = `2x ${metalItem.name}`;
         }
         if(missing !== '') {
             return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You need to have \`${missing}\` to craft \`${getItemName(item)}\``));
         }
+
         await user.removeItem(woodItem);
-        await user.removeItem(ironItem, 2);
+        await user.removeItem(metalItem, 2);
         await user.addItem(item);
         const xp = random(1, 5);
         user.crafting_skill += xp;
         user.save();
-        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You crafted 1x ${getItemName(item)} (used 1x ${getItemName(woodItem)}) and 2x ${getItemName(ironItem)}. Gained ${xp}XP`));
-    }
-    else if(item.name === 'Iron Pickaxe') {
-        const user = await Users.findOne({ where: { user_id: message.author.id } });
-        const ironItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Ingot' } } });
-        const userItem1 = await user.hasItem(ironItem, 2);
-        const logItem = await user.getUserLogs();
-        const woodItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: logItem } } });
-        const userItem2 = await user.hasItem(woodItem);
-        let missing = '';
-        if(userItem1 && !userItem2) {
-            missing += '1x Log';
-        }
-        else if(!userItem1 && !userItem2) {
-            missing += `1x Log, 2x ${ironItem.name}`;
-        }
-        else if(!userItem1) {
-            missing += `2x ${ironItem.name}`;
-        }
-        if(missing !== '') {
-            return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You need to have \`${missing}\` to craft \`${getItemName(item)}\``));
-        }
-        await user.removeItem(woodItem);
-        await user.removeItem(ironItem, 2);
-        await user.addItem(item);
-        const xp = random(1, 5);
-        user.crafting_skill += xp;
-        user.save();
-        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You crafted 1x ${getItemName(item)} (used 1x ${getItemName(woodItem)}) and 2x ${getItemName(ironItem)}. Gained ${xp}XP`));
-    }
-    else if(item.name === 'Copper Axe') {
-        const user = await Users.findOne({ where: { user_id: message.author.id } });
-        const ironItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Copper Ingot' } } });
-        const userItem1 = await user.hasItem(ironItem, 2);
-        const logItem = await user.getUserLogs();
-        const woodItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: logItem } } });
-        const userItem2 = await user.hasItem(woodItem);
-        let missing = '';
-        if(userItem1 && !userItem2) {
-            missing += '1x Log';
-        }
-        else if(!userItem1 && !userItem2) {
-            missing += `1x Log, 2x ${ironItem.name}`;
-        }
-        else if(!userItem1) {
-            missing += `2x ${ironItem.name}`;
-        }
-        if(missing !== '') {
-            return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You need to have \`${missing}\` to craft \`${getItemName(item)}\``));
-        }
-        await user.removeItem(woodItem);
-        await user.removeItem(ironItem, 2);
-        await user.addItem(item);
-        const xp = random(1, 5);
-        user.crafting_skill += xp;
-        user.save();
-        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You crafted 1x ${getItemName(item)} (used 1x ${getItemName(woodItem)}) and 2x ${getItemName(ironItem)}. Gained ${xp}XP`));
-    }
-    else if(item.name === 'Copper Pickaxe') {
-        const user = await Users.findOne({ where: { user_id: message.author.id } });
-        const ironItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Copper Ingot' } } });
-        const userItem1 = await user.hasItem(ironItem, 2);
-        const logItem = await user.getUserLogs();
-        const woodItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: logItem } } });
-        const userItem2 = await user.hasItem(woodItem);
-        let missing = '';
-        if(userItem1 && !userItem2) {
-            missing += '1x Log';
-        }
-        else if(!userItem1 && !userItem2) {
-            missing += `1x Log, 2x ${ironItem.name}`;
-        }
-        else if(!userItem1) {
-            missing += `2x ${ironItem.name}`;
-        }
-        if(missing !== '') {
-            return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You need to have \`${missing}\` to craft \`${getItemName(item)}\``));
-        }
-        await user.removeItem(woodItem);
-        await user.removeItem(ironItem, 2);
-        await user.addItem(item);
-        const xp = random(1, 5);
-        user.crafting_skill += xp;
-        user.save();
-        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You crafted 1x ${getItemName(item)} (used 1x ${getItemName(woodItem)}) and 2x ${getItemName(ironItem)}. Gained ${xp}XP`));
+        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You crafted 1x ${getItemName(item)} (used 1x ${getItemName(woodItem)}) and 2x ${getItemName(metalItem)}. Gained ${xp}XP`));
     }
     else if(item.name === 'Fishing Rod') {
-        const user = await Users.findOne({ where: { user_id: message.author.id } });
         const stringItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: ':thread: String' } } });
         const userItem1 = await user.hasItem(stringItem);
         const logItem = await user.getUserLogs();
@@ -158,3 +76,12 @@ exports.execute = async function(message, commandArgs, Users, Enemies, UserItems
         return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription('I can\'t craft that'));
     }
 };
+
+async function getMetalItem(CurrencyShop, itemName) {
+    if(itemName === 'Iron Axe' || itemName === 'Iron Pickaxe') {
+        return await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Ingot' } } });
+    }
+    if(itemName === 'Copper Axe' || itemName === 'Copper Pickaxe') {
+        return await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Copper Ingot' } } });
+    }
+}
