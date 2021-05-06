@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "description": "",
   "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TitasPi/discordgamebot.git"
+  },
   "scripts": {
     "start": "node app.js"
   },
   "author": "Titas",
-  "license": "ISC",
+  "license": "GNU GPLv3",
   "dependencies": {
     "colors": "^1.4.0",
     "discord.js": "^12.5.3",
