@@ -7,25 +7,25 @@
 exports.getSkillLevel = function(skill, xp) {
     let level = 1;
     switch (skill) {
-    case 'Woodcutting':
-    case 'Mining':
-    case 'Fishing':
-    case 'Smithing':
-    case 'Cooking':
-    case 'Crafting':
-    case 'Attack':
-    case 'Hitpoints':
+        case 'Woodcutting':
+        case 'Mining':
+        case 'Fishing':
+        case 'Smithing':
+        case 'Cooking':
+        case 'Crafting':
+        case 'Attack':
+        case 'Hitpoints':
         // eslint-disable-next-line no-constant-condition
-        while(true) {
-            if(10 + level * 20 < xp) {
-                level++;
+            while(true) {
+                if(10 + level * 20 < xp) {
+                    level++;
+                }
+                else {
+                    return level;
+                }
             }
-            else {
-                return level;
-            }
-        }
-    default:
-        break;
+        default:
+            break;
     }
 };
 
@@ -47,21 +47,21 @@ exports.getMaxHP = function(level) {
  */
 exports.getItemName = function(item) {
     switch (item.category) {
-    case 'Mining':
-        if(item.name.indexOf('Pickaxe') > -1) return `⛏ ${item.name}`;
-        else return `🧱 ${item.name}`;
-    case 'Woodcutting':
-        if(item.name.indexOf('Axe') > -1) return `🪓 ${item.name}`;
-        else return `🌳 ${item.name}`;
-    case 'Fishing':
-        if(item.name === 'Fishing Rod') {
-            return `🎣 ${item.name}`;
-        }
-        else {
-            return `🐟 ${item.name}`;
-        }
-    default:
-        return item.name;
+        case 'Mining':
+            if(item.name.indexOf('Pickaxe') > -1) return `⛏ ${item.name}`;
+            else return `🧱 ${item.name}`;
+        case 'Woodcutting':
+            if(item.name.indexOf('Axe') > -1) return `🪓 ${item.name}`;
+            else return `🌳 ${item.name}`;
+        case 'Fishing':
+            if(item.name === 'Fishing Rod') {
+                return `🎣 ${item.name}`;
+            }
+            else {
+                return `🐟 ${item.name}`;
+            }
+        default:
+            return item.name;
     }
 };
 
