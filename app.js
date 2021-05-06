@@ -1,38 +1,6 @@
 const config = require('./config');
 const Discord = require('discord.js');
-
-const DebugCommand = require('./commands/debug');
-const BalanceCommand = require('./commands/balance');
-const InventoryCommand = require('./commands/inventory');
-const HousesCommand = require('./commands/houses');
-const AboutCommand = require('./commands/about');
-const TransferCommand = require('./commands/transfer');
-const BuyCommand = require('./commands/buy');
-const BuyHouseCommand = require('./commands/buyhouse');
-const SellHouseCommand = require('./commands/sellhouse');
-const SellCommand = require('./commands/sell');
-const SellAllCommand = require('./commands/sellall');
-const ShopCommand = require('./commands/shop');
-const HouseShopCommand = require('./commands/houseshop');
-const MoveToCommand = require('./commands/moveto');
-const LeaderboardCommand = require('./commands/leaderboard');
-const MineCommand = require('./commands/mine');
-const ChopCommand = require('./commands/chop');
-const FishCommand = require('./commands/fish');
-const LootCommand = require('./commands/loot');
-const SmeltCommand = require('./commands/smelt');
-const CookCommand = require('./commands/cook');
-const MiningCommand = require('./commands/mining');
-const WoodCuttingCommand = require('./commands/woodcutting');
-const SmithingCommand = require('./commands/smithing');
-const CookingCommand = require('./commands/cooking');
-const CraftCommand = require('./commands/craft');
-const CraftingCommand = require('./commands/crafting');
-const EatCommand = require('./commands/eat');
-const AttackCommand = require('./commands/attack');
-const HelpCommand = require('./commands/help');
-const AboutBotCommand = require('./commands/aboutbot');
-const GitHubCommand = require('./commands/github');
+const fs = require('fs');
 
 const { random } = require('./utils');
 const Embeds = require('./embeds');
@@ -44,6 +12,7 @@ const client = new Discord.Client();
 const { Users, CurrencyShop, HouseShop, UserItems, Enemies } = require('./dbObjects');
 const Currency = new Discord.Collection();
 const Cooldowns = new Discord.Collection();
+const Commands = new Discord.Collection();
 
 const PREFIX = config.prefix;
 const TOKEN = config.token;
@@ -73,6 +42,13 @@ Reflect.defineProperty(Currency, 'getBalance', {
         return user ? user.balance : 0;
     },
 });
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    Commands.set(file.slice(0, -3), command);
+}
 
 client.once('ready', async () => {
     const allUsers = await Users.findAll();
@@ -161,341 +137,18 @@ client.on('message', async message => {
             return message.channel.send(Embeds.pleaseWait(message, timeLeft, time, command));
         }
     }
+    // New command handler
+    if(!Commands.has(command)) return;
 
-    // Command execution
-    if (command === 'balance' || command === 'bal') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            BalanceCommand(message, Currency);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
+    try {
+        Logger.cmd(`${message.author.tag} executed '${command}' command`);
+        Commands.get(command)(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client);
     }
-    else if (command === 'inventory' || command === 'inv') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            InventoryCommand(Users, message);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
+    catch(error) {
+        Logger.error(`Caught error while executing '${command}' command: ${error}`);
+        message.channel.send(Embeds.error());
     }
-    else if (command === 'houses') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            HousesCommand(Users, message);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'info' || command === 'about') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            AboutCommand(Users, message, Currency);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'transfer') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            TransferCommand(message, Currency, commandArgs);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'buy') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            BuyCommand(message, Currency, commandArgs, CurrencyShop, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'buyhouse') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            BuyHouseCommand(message, Currency, commandArgs, HouseShop, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'sellhouse') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SellHouseCommand(message, Currency, commandArgs, HouseShop, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'sell') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SellCommand(message, Currency, commandArgs, CurrencyShop, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'sellall') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SellAllCommand(message, Currency, commandArgs, CurrencyShop, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'shop') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            ShopCommand(message, CurrencyShop);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'houseshop') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            HouseShopCommand(message, HouseShop);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'moveto') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            MoveToCommand(message, HouseShop, commandArgs, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'leaderboard') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            LeaderboardCommand(message, Currency, client);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'mine') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            MineCommand(message, Users, CurrencyShop, timestamps, now, cooldownAmount);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'chop') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            ChopCommand(message, Users, CurrencyShop, timestamps, now, cooldownAmount);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'fish') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            FishCommand(message, Users, CurrencyShop, timestamps, now, cooldownAmount);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'loot') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            LootCommand(message, Users, CurrencyShop, timestamps, now, cooldownAmount);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'smelt') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SmeltCommand(message, Users, CurrencyShop, commandArgs);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'cook') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            CookCommand(message, Users, CurrencyShop, commandArgs);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'mining') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            MiningCommand(message, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'woodcutting') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            WoodCuttingCommand(message, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'smithing') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SmithingCommand(message, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'cooking') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            CookingCommand(message, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'craft') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            CraftCommand(message, Users, commandArgs, CurrencyShop);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'crafting') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            CraftingCommand(message, Users);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'gift') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            if(commandArgs === 'me lol') {
-                Currency.add(message.author.id, 100);
-                return message.channel.send(`${message.author.tag}, you got 100 :coin:`);
-            }
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'debug') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            DebugCommand(Users, message, Currency);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'eat') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            EatCommand(message, Users, commandArgs, UserItems, CurrencyShop);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'attack') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            AttackCommand(message, Users, Currency, timestamps, now, cooldownAmount, Enemies);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'help') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            HelpCommand(message, PREFIX);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'aboutbot') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            AboutBotCommand(message, PREFIX, VERSION);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
-    else if (command === 'gitlab' || command === 'github') {
-        try {
-            Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            GitHubCommand(message);
-        }
-        catch (error) {
-            Logger.error(`Caught error while executing '${command}' command: ${error}`);
-            message.channel.send(Embeds.error());
-        }
-    }
+    return;
 });
 
 try {

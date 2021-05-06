@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const { getMaxHP, getSkillLevel } = require('../utils');
 
-module.exports = async function(Users, message, currency) {
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const target = message.mentions.users.first() || message.author;
     const user = await Users.findOne({ where: { user_id: target.id } });
     let house = 'Homeless';
@@ -29,7 +30,7 @@ module.exports = async function(Users, message, currency) {
 
     const aboutUser = new Discord.MessageEmbed().setTitle(`About ${target.tag}`);
     aboutUser.addField(`Information about ${target.tag}`, '\u200b');
-    aboutUser.addField(':coin: Coins', `${currency.getBalance(target.id)} :coin:`, true);
+    aboutUser.addField(':coin: Coins', `${Currency.getBalance(target.id)} :coin:`, true);
     aboutUser.addField('❤ Health', `${health}/${getMaxHP(getSkillLevel('Hitpoints', hitpoint_skillXP))}`, true);
     aboutUser.addField('Skills', '\u200b');
     aboutUser.addField('⛏ Mining', `${mining_skillXP}XP | ${getSkillLevel('Mining', mining_skillXP)} Level`, true);

@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 
-module.exports = async function(message, currency, commandArgs) {
-    const currentAmount = currency.getBalance(message.author.id);
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+    const currentAmount = Currency.getBalance(message.author.id);
     const transferAmount = commandArgs.split(/ +/).find(arg => !/<@!?\d+>/.test(arg));
     const transferTarget = message.mentions.users.first();
 
@@ -10,9 +11,9 @@ module.exports = async function(message, currency, commandArgs) {
     if (transferAmount <= 0) return message.channel.send(new Discord.MessageEmbed().setTitle('Transfer').setDescription(`Please enter an amount greater than zero, ${message.author}`));
     if (transferTarget == undefined) return message.channel.send(new Discord.MessageEmbed().setTitle('Transfer').setDescription(`Sorry ${message.author}, I can't find the user you mentioned`));
 
-    currency.add(message.author.id, -transferAmount);
-    currency.add(transferTarget.id, transferAmount);
+    Currency.add(message.author.id, -transferAmount);
+    Currency.add(transferTarget.id, transferAmount);
 
-    return message.channel.send(new Discord.MessageEmbed().setTitle('Transfer').setDescription(`Successfully transferred ${transferAmount}:coin: to ${transferTarget}. Your current balance is ${currency.getBalance(message.author.id)}:coin:`));
+    return message.channel.send(new Discord.MessageEmbed().setTitle('Transfer').setDescription(`Successfully transferred ${transferAmount}:coin: to ${transferTarget}. Your current balance is ${Currency.getBalance(message.author.id)}:coin:`));
 
 };

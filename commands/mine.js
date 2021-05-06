@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { random, getItemName, getSkillLevel } = require('../utils');
 const { Op } = require('sequelize');
 
-module.exports = async function(message, Users, CurrencyShop, timestamps, now, cooldownAmount) {
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     const pickaxeItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Pickaxe' } } });
     const userPickaxe = await user.hasItem(pickaxeItem);

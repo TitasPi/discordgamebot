@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { Op } = require('sequelize');
 const { getItemName } = require('../utils');
 
-module.exports = async function(message, currency, commandArgs, CurrencyShop, Users) {
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     let item = '';
     if(commandArgs === 'axe' || commandArgs === 'Axe') {
         item = await CurrencyShop.findOne({
@@ -28,7 +29,7 @@ module.exports = async function(message, currency, commandArgs, CurrencyShop, Us
     }
 
     await user.sellItem(item);
-    await currency.add(message.author.id, item.sellPrice);
+    await Currency.add(message.author.id, item.sellPrice);
 
     message.channel.send(new Discord.MessageEmbed().setTitle('Shop').setDescription(`You've sold 1x **${getItemName(item)}** for ${item.sellPrice} :coin:`));
 };

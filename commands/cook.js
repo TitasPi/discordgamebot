@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { random, getItemName } = require('../utils');
 const { Op } = require('sequelize');
 
-module.exports = async function(message, Users, CurrencyShop, commandArgs) {
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` }, category: 'Fishing' } });
     if (!item) return message.channel.send(new Discord.MessageEmbed().setTitle('Cooking').setDescription('That item doesn\'t exist.'));
     if(item.name !== 'Fishing Rod') {

@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { random } = require('../utils');
 const { Op } = require('sequelize');
 
-module.exports = async function(message, Users, CurrencyShop, timestamps, now, cooldownAmount) {
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     if(user.action != 'Idle') {
         return message.channel.send(`You are currently \`${user.action}\``);

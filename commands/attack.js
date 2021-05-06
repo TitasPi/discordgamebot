@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { getSkillLevel, getMaxHP, random } = require('../utils');
 const { Op, literal } = require('sequelize');
 
-module.exports = async function(message, Users, currency, timestamps, now, cooldownAmount, Enemies) {
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     const attackLevel = getSkillLevel('Attack', user.attack_skill);
     let enemy = undefined;

@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const { getSkillLevel, getMaxHP, getItemName } = require('../utils');
 const { Op } = require('sequelize');
 
-module.exports = async function(message, Users, commandArgs, UserItems, CurrencyShop) {
+// eslint-disable-next-line no-unused-vars
+module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     const foodItem = await UserItems.findOne({
         where: {
