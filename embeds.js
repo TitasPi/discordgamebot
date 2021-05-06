@@ -32,10 +32,10 @@ exports.aboutBot = function(prefix, version) {
         .addField('Version', version, true));
 };
 
-exports.gitlab = function() {
+exports.gitHub = function() {
     return(new Discord.MessageEmbed()
         .setTitle(':robot: DGB Repository :robot:')
-        .setDescription('This bot has repository on [GitLab](https://gitlab.com/TitasNxLT/discordgamebot)'));
+        .setDescription('This bot has repository on [GitHub](https://github.com/TitasPi/discordgamebot)'));
 };
 
 exports.help = function(prefix) {

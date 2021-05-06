@@ -32,7 +32,7 @@ const EatCommand = require('./commands/eat');
 const AttackCommand = require('./commands/attack');
 const HelpCommand = require('./commands/help');
 const AboutBotCommand = require('./commands/aboutbot');
-const GitLabCommand = require('./commands/gitlab');
+const GitHubCommand = require('./commands/github');
 
 const { random } = require('./utils');
 const Embeds = require('./embeds');
@@ -489,7 +489,7 @@ client.on('message', async message => {
     else if (command === 'gitlab' || command === 'github') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            GitLabCommand(message);
+            GitHubCommand(message);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
