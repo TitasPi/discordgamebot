@@ -98,6 +98,7 @@ client.on('message', async message => {
     const command = Commands.get(commandInput) || Commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandInput));
     const commandName = Commands.get(commandInput)?.name || Commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandInput))?.name;
 
+    // If command isn't found - ignore it
     if(!command) return;
 
     // If command isn't in cooldowns - add it
@@ -142,8 +143,6 @@ client.on('message', async message => {
             return message.channel.send(Embeds.pleaseWait(message, timeLeft, time, commandName));
         }
     }
-    // New command handler
-    // if(!Commands.has(command)) return;
 
     try {
         Logger.cmd(`${message.author.tag} executed '${commandName}' command`);
