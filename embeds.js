@@ -24,6 +24,14 @@ exports.error = function() {
         .setDescription('Error has occured while executing command.\nContact staff if this occurs more often.'));
 };
 
+exports.aboutBot = function(prefix, version) {
+    return(new Discord.MessageEmbed()
+        .setTitle(':robot: DGB :robot:')
+        .setDescription('Quite unique game bot on Discord')
+        .addField('Author', 'Titas#5726', true)
+        .addField('Version', version, true));
+};
+
 exports.help = function(prefix) {
 
     const helpObj = [

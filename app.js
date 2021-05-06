@@ -31,19 +31,24 @@ const CraftingCommand = require('./commands/crafting');
 const EatCommand = require('./commands/eat');
 const AttackCommand = require('./commands/attack');
 const HelpCommand = require('./commands/help');
+const AboutBotCommand = require('./commands/aboutbot');
 
 const { random } = require('./utils');
 const Embeds = require('./embeds');
 const Web = require('./web/app');
 const Logger = require('./logger');
+const package = require('./package.json');
 
 const client = new Discord.Client();
 const { Users, CurrencyShop, HouseShop, UserItems, Enemies } = require('./dbObjects');
 const currency = new Discord.Collection();
-const PREFIX = config.prefix;
 const cooldowns = new Discord.Collection();
-const shopRandomizasion = false;
-const webEnabled = false;
+
+const PREFIX = config.prefix;
+const TOKEN = config.token;
+const VERSION = package.version;
+const SHOP_RANDOMIZATION = false;
+const WEB_ENABLED = false;
 
 
 Reflect.defineProperty(currency, 'add', {
@@ -71,10 +76,10 @@ Reflect.defineProperty(currency, 'getBalance', {
 client.once('ready', async () => {
     const storedBalances = await Users.findAll();
     storedBalances.forEach(b => currency.set(b.user_id, b));
-    if(webEnabled) Web.start();
+    if(WEB_ENABLED) Web.start();
     Logger.log(`Logged in as ${client.user.tag}!`);
 
-    if(shopRandomizasion) {
+    if(SHOP_RANDOMIZATION) {
         /**
          * Shop stock refresh funciton
          */
@@ -470,6 +475,16 @@ client.on('message', async message => {
             message.channel.send(Embeds.error());
         }
     }
+    else if (command === 'aboutbot') {
+        try {
+            Logger.cmd(`${message.author.tag} executed '${command}' command`);
+            AboutBotCommand(message, PREFIX, VERSION);
+        }
+        catch (error) {
+            Logger.error(`Caught error while executing '${command}' command: ${error}`);
+            message.channel.send(Embeds.error());
+        }
+    }
 });
 
-client.login(config.token);
+client.login(TOKEN);
