@@ -32,6 +32,7 @@ const EatCommand = require('./commands/eat');
 const AttackCommand = require('./commands/attack');
 const HelpCommand = require('./commands/help');
 const AboutBotCommand = require('./commands/aboutbot');
+const GitLabCommand = require('./commands/gitlab');
 
 const { random } = require('./utils');
 const Embeds = require('./embeds');
@@ -479,6 +480,16 @@ client.on('message', async message => {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
             AboutBotCommand(message, PREFIX, VERSION);
+        }
+        catch (error) {
+            Logger.error(`Caught error while executing '${command}' command: ${error}`);
+            message.channel.send(Embeds.error());
+        }
+    }
+    else if (command === 'gitlab' || command === 'github') {
+        try {
+            Logger.cmd(`${message.author.tag} executed '${command}' command`);
+            GitLabCommand(message);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
