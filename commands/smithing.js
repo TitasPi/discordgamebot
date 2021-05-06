@@ -11,7 +11,7 @@ module.exports = async function(message, Users) {
         level = getSkillLevel('Smithing', user.smithing_skillXP);
     }
     message.channel.send(new Discord.MessageEmbed()
-        .setTitle('About smithing')
+        .setTitle('⚒ About smithing ⚒')
         .setDescription('Gain xp while smelting ores into ingots.')
         .addField('1 Level', 'Ability to smelt iron ores')
         .addField('2 Level', 'Ability to smelt copper ores')

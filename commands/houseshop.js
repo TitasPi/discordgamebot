@@ -12,5 +12,5 @@ module.exports = async function(message, HouseShop) {
         }
     });
 
-    return message.channel.send(new Discord.MessageEmbed().setTitle('Shop').setDescription(shopItems));
+    return message.channel.send(new Discord.MessageEmbed().setTitle('🛒 Shop 🏬').setDescription(shopItems));
 };

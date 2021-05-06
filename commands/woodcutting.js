@@ -11,7 +11,7 @@ module.exports = async function(message, Users) {
         level = getSkillLevel('Woodcutting', user.woodcutting_skill);
     }
     message.channel.send(new Discord.MessageEmbed()
-        .setTitle('About woodcutting')
+        .setTitle('🪓 About woodcutting 🪓')
         .setDescription('Gain xp while chopping wood.')
         .addField('1 Level', 'Ability to chop oak logs')
         .addField('2 Level', 'Ability to chop birch logs')

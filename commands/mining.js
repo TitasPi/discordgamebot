@@ -11,7 +11,7 @@ module.exports = async function(message, Users) {
         level = getSkillLevel('Mining', user.mining_skill);
     }
     message.channel.send(new Discord.MessageEmbed()
-        .setTitle('About mining')
+        .setTitle('⛏ About mining ⛏')
         .setDescription('Gain xp while mining ores.')
         .addField('1 Level', 'Ability to mine coal and iron ore')
         .addField('2 Level', 'Ability to mine copper')
