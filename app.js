@@ -498,4 +498,10 @@ client.on('message', async message => {
     }
 });
 
-client.login(TOKEN);
+try {
+    Logger.log('Logging into Discord API');
+    client.login(TOKEN);
+}
+catch (error) {
+    Logger.error(`Caught error while logging into Discord API: ${error}`);
+}
