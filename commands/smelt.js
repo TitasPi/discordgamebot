@@ -8,8 +8,12 @@ module.exports = async function(message, Users, CurrencyShop, commandArgs) {
     if(item.name === 'Iron Ore' || item.name === 'Copper Ore' || item.name === 'Gold Ore') {
         const coalItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Coal' } } });
         const user = await Users.findOne({ where: { user_id: message.author.id } });
-        const userItem = await user.hasItem(coalItem);
-        if(!userItem) {
+        const userCoalItem = await user.hasItem(coalItem);
+        const userOreItem = await user.hasItem(item);
+        if (!userOreItem) {
+            return message.channel.send(new Discord.MessageEmbed().setTitle('Smelting').setDescription(`You don't have ${getItemName(item)}.`));
+        }
+        if(!userCoalItem) {
             return message.channel.send(new Discord.MessageEmbed().setTitle('Smelting').setDescription(`You need to have \`${getItemName(coalItem)}\` to smelt \`${getItemName(item)}\``));
         }
         let ingotItem;
