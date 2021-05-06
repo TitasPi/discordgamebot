@@ -6,6 +6,7 @@ const { random } = require('./utils');
 const Embeds = require('./embeds');
 const Web = require('./web/app');
 const Logger = require('./logger');
+const Cooldown = require('./cooldown');
 const package = require('./package.json');
 
 const client = new Discord.Client();
@@ -109,40 +110,10 @@ client.on('message', async message => {
     // Get current time, and set default cooldown time to 3 seconds
     const now = Date.now();
     const timestamps = Cooldowns.get(commandName);
-    let cooldownAmount = (3) * 1000;
-
-    // Change cooldown time depending on command
-    switch (commandName) {
-        case 'mine':
-        case 'chop':
-        case 'fish':
-        case 'attack':
-            cooldownAmount = (10) * 1000 * 60;
-            break;
-        case 'loot':
-            cooldownAmount = (5) * 1000 * 60;
-            break;
-    }
+    const cooldownAmount = Cooldown.getTime(commandName);
 
     // If user has cooldown for command - cancel execution and inform user
-    if (timestamps.has(message.author.id)) {
-        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-        if (now < expirationTime) {
-            let timeLeft = (expirationTime - now) / 1000;
-            let time = 's';
-            if(timeLeft > 60) {
-                timeLeft = timeLeft / 60;
-                time = 'min';
-            }
-            if(timeLeft > 60) {
-                timeLeft = timeLeft / 60;
-                time = 'h';
-            }
-            Logger.log(`${message.author.tag} is on a cooldown for '${commandName}' command`);
-            return message.channel.send(Embeds.pleaseWait(message, timeLeft, time, commandName));
-        }
-    }
+    if(Cooldown.check(timestamps, cooldownAmount, now, commandName, message)) return;
 
     try {
         Logger.cmd(`${message.author.tag} executed '${commandName}' command`);
