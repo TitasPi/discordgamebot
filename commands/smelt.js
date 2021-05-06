@@ -2,8 +2,10 @@ const Discord = require('discord.js');
 const { random, getItemName } = require('../utils');
 const { Op } = require('sequelize');
 
+exports.name = 'smelt';
+exports.description = 'Smelt ores';
 // eslint-disable-next-line no-unused-vars
-module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` } } });
     if (!item) return message.channel.send(new Discord.MessageEmbed().setTitle('Smelting').setDescription('That item doesn\'t exist.'));
     if(item.name === 'Iron Ore' || item.name === 'Copper Ore' || item.name === 'Gold Ore') {

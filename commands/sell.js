@@ -2,8 +2,10 @@ const Discord = require('discord.js');
 const { Op } = require('sequelize');
 const { getItemName } = require('../utils');
 
+exports.name = 'sell';
+exports.description = 'Sell item';
 // eslint-disable-next-line no-unused-vars
-module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     let item = '';
     if(commandArgs === 'axe' || commandArgs === 'Axe') {
         item = await CurrencyShop.findOne({

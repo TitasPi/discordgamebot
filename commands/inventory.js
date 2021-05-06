@@ -1,8 +1,11 @@
 const Discord = require('discord.js');
 const { getItemName } = require('../utils');
 
+exports.name = 'inventory';
+exports.description = 'Shows your inventory';
+exports.aliases = 'inv';
 // eslint-disable-next-line no-unused-vars
-module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const target = message.mentions.users.first() || message.author;
     const user = await Users.findOne({ where: { user_id: target.id } });
     const items = await user.getItems();

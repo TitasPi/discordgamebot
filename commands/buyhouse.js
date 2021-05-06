@@ -1,8 +1,10 @@
 const Discord = require('discord.js');
 const { Op } = require('sequelize');
 
+exports.name = 'buyhouse';
+exports.description = 'Buys house from house shop';
 // eslint-disable-next-line no-unused-vars
-module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const item = await HouseShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` }, buyable: 1 } });
     if (!item) return message.channel.send(new Discord.MessageEmbed().setTitle('🏠 Houses 🏠').setDescription('This house doesn\'t exist.'));
     if (item.buyPrice > Currency.getBalance(message.author.id)) {

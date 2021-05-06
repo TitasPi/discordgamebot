@@ -2,8 +2,10 @@ const Discord = require('discord.js');
 const { getSkillLevel, getMaxHP, random } = require('../utils');
 const { Op, literal } = require('sequelize');
 
+exports.name = 'attack';
+exports.description = 'Attacks enemy';
 // eslint-disable-next-line no-unused-vars
-module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     const attackLevel = getSkillLevel('Attack', user.attack_skill);
     let enemy = undefined;
@@ -56,14 +58,14 @@ module.exports = async function(message, commandArgs, Users, Enemies, UserItems,
     setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     if(user.health <= 0) {
         user.health = getMaxHP(getSkillLevel('Hitpoints', user.hitpoint_skill));
-        currency.add(message.author.id, -lostMoney);
+        Currency.add(message.author.id, -lostMoney);
         user.save();
         return message.channel.send(new Discord.MessageEmbed().setTitle('⚔ Attack ⚔').setDescription(`**You** died and lost ${lostMoney} :coin:`));
     }
     else {
         user.attack_skill += attackXP;
         user.hitpoint_skill += hitpointXP;
-        currency.add(message.author.id, winMoney);
+        Currency.add(message.author.id, winMoney);
         user.save();
         return message.channel.send(new Discord.MessageEmbed().setTitle('⚔ Attack ⚔').setDescription(`**You** killed **${enemy.name}** and got ${attackXP} attack XP and ${hitpointXP} hitpoints XP\n**${enemy.name}** droped ${winMoney} :coin:`));
     }

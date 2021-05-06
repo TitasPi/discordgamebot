@@ -1,8 +1,10 @@
 const Discord = require('discord.js');
 const { getItemName } = require('../utils');
 
+exports.name = 'shop';
+exports.description = 'Shows shop';
 // eslint-disable-next-line no-unused-vars
-module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const items = await CurrencyShop.findAll({
         order: [
             ['id', 'ASC'],

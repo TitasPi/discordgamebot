@@ -1,7 +1,10 @@
 const Discord = require('discord.js');
 
+exports.name = 'transfer';
+exports.description = 'Transfer money to other people';
+exports.aliases = 'pay';
 // eslint-disable-next-line no-unused-vars
-module.exports = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const currentAmount = Currency.getBalance(message.author.id);
     const transferAmount = commandArgs.split(/ +/).find(arg => !/<@!?\d+>/.test(arg));
     const transferTarget = message.mentions.users.first();

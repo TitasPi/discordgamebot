@@ -93,20 +93,25 @@ client.on('message', async message => {
     // Get command and arguments from the message
     const input = message.content.slice(PREFIX.length).trim();
     if (!input.length) return;
-    const [, command, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
+    const [, commandInput, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
+
+    const command = Commands.get(commandInput) || Commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandInput));
+    const commandName = Commands.get(commandInput)?.name || Commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandInput))?.name;
+
+    if(!command) return;
 
     // If command isn't in cooldowns - add it
-    if (!Cooldowns.has(command)) {
-        Cooldowns.set(command, new Discord.Collection());
+    if (!Cooldowns.has(commandName)) {
+        Cooldowns.set(commandName, new Discord.Collection());
     }
 
     // Get current time, and set default cooldown time to 3 seconds
     const now = Date.now();
-    const timestamps = Cooldowns.get(command);
+    const timestamps = Cooldowns.get(commandName);
     let cooldownAmount = (3) * 1000;
 
     // Change cooldown time depending on command
-    switch (command) {
+    switch (commandName) {
         case 'mine':
         case 'chop':
         case 'fish':
@@ -133,19 +138,19 @@ client.on('message', async message => {
                 timeLeft = timeLeft / 60;
                 time = 'h';
             }
-            Logger.log(`${message.author.tag} is on a cooldown for '${command}' command`);
-            return message.channel.send(Embeds.pleaseWait(message, timeLeft, time, command));
+            Logger.log(`${message.author.tag} is on a cooldown for '${commandName}' command`);
+            return message.channel.send(Embeds.pleaseWait(message, timeLeft, time, commandName));
         }
     }
     // New command handler
-    if(!Commands.has(command)) return;
+    // if(!Commands.has(command)) return;
 
     try {
-        Logger.cmd(`${message.author.tag} executed '${command}' command`);
-        Commands.get(command)(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client);
+        Logger.cmd(`${message.author.tag} executed '${commandName}' command`);
+        Commands.get(commandName).execute(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client);
     }
     catch(error) {
-        Logger.error(`Caught error while executing '${command}' command: ${error}`);
+        Logger.error(`Caught error while executing '${commandName}' command: ${error}`);
         message.channel.send(Embeds.error());
     }
     return;
