@@ -107,16 +107,11 @@ Users.prototype.getHouses = function() {
 
 /* eslint-disable-next-line func-names */
 Users.prototype.hasItem = async function(item, amount = 1) {
-    const userItem = await UserItems.findOne({
+    const userHasItem = await UserItems.findOne({
         where: { user_id: this.user_id, item_id: item.id, amount: { [Op.gte]: amount } },
     });
 
-    if(userItem) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return userHasItem;
 };
 
 Users.prototype.getUserLogs = async function(amount = 1) {
