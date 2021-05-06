@@ -42,8 +42,8 @@ const package = require('./package.json');
 
 const client = new Discord.Client();
 const { Users, CurrencyShop, HouseShop, UserItems, Enemies } = require('./dbObjects');
-const currency = new Discord.Collection();
-const cooldowns = new Discord.Collection();
+const Currency = new Discord.Collection();
+const Cooldowns = new Discord.Collection();
 
 const PREFIX = config.prefix;
 const TOKEN = config.token;
@@ -52,31 +52,31 @@ const SHOP_RANDOMIZATION = false;
 const WEB_ENABLED = false;
 
 
-Reflect.defineProperty(currency, 'add', {
+Reflect.defineProperty(Currency, 'add', {
     /* eslint-disable-next-line func-name-matching */
     value: async function add(id, amount) {
-        const user = currency.get(id);
+        const user = Currency.get(id);
         if (user) {
             user.balance += Number(amount);
             return user.save();
         }
         const newUser = await Users.create({ user_id: id, balance: amount });
-        currency.set(id, newUser);
+        Currency.set(id, newUser);
         return newUser;
     },
 });
 
-Reflect.defineProperty(currency, 'getBalance', {
+Reflect.defineProperty(Currency, 'getBalance', {
     /* eslint-disable-next-line func-name-matching */
     value: function getBalance(id) {
-        const user = currency.get(id);
+        const user = Currency.get(id);
         return user ? user.balance : 0;
     },
 });
 
 client.once('ready', async () => {
-    const storedBalances = await Users.findAll();
-    storedBalances.forEach(b => currency.set(b.user_id, b));
+    const allUsers = await Users.findAll();
+    allUsers.forEach(b => Currency.set(b.user_id, b));
     if(WEB_ENABLED) Web.start();
     Logger.log(`Logged in as ${client.user.tag}!`);
 
@@ -110,7 +110,7 @@ client.on('message', async message => {
     // If message came from bot - ignore it
     if (message.author.bot) return;
     // Making sure user has account
-    currency.add(message.author.id, 0);
+    Currency.add(message.author.id, 0);
 
     // If message doesn't start with prefix - ignore it
     if (!message.content.startsWith(PREFIX)) return;
@@ -120,13 +120,13 @@ client.on('message', async message => {
     const [, command, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
 
     // If command isn't in cooldowns - add it
-    if (!cooldowns.has(command)) {
-        cooldowns.set(command, new Discord.Collection());
+    if (!Cooldowns.has(command)) {
+        Cooldowns.set(command, new Discord.Collection());
     }
 
     // Get current time, and set default cooldown time to 3 seconds
     const now = Date.now();
-    const timestamps = cooldowns.get(command);
+    const timestamps = Cooldowns.get(command);
     let cooldownAmount = (3) * 1000;
 
     // Change cooldown time depending on command
@@ -166,7 +166,7 @@ client.on('message', async message => {
     if (command === 'balance' || command === 'bal') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            BalanceCommand(message, currency);
+            BalanceCommand(message, Currency);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -196,7 +196,7 @@ client.on('message', async message => {
     else if (command === 'info' || command === 'about') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            AboutCommand(Users, message, currency);
+            AboutCommand(Users, message, Currency);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -206,7 +206,7 @@ client.on('message', async message => {
     else if (command === 'transfer') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            TransferCommand(message, currency, commandArgs);
+            TransferCommand(message, Currency, commandArgs);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -216,7 +216,7 @@ client.on('message', async message => {
     else if (command === 'buy') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            BuyCommand(message, currency, commandArgs, CurrencyShop, Users);
+            BuyCommand(message, Currency, commandArgs, CurrencyShop, Users);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -226,7 +226,7 @@ client.on('message', async message => {
     else if (command === 'buyhouse') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            BuyHouseCommand(message, currency, commandArgs, HouseShop, Users);
+            BuyHouseCommand(message, Currency, commandArgs, HouseShop, Users);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -236,7 +236,7 @@ client.on('message', async message => {
     else if (command === 'sellhouse') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SellHouseCommand(message, currency, commandArgs, HouseShop, Users);
+            SellHouseCommand(message, Currency, commandArgs, HouseShop, Users);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -246,7 +246,7 @@ client.on('message', async message => {
     else if (command === 'sell') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SellCommand(message, currency, commandArgs, CurrencyShop, Users);
+            SellCommand(message, Currency, commandArgs, CurrencyShop, Users);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -256,7 +256,7 @@ client.on('message', async message => {
     else if (command === 'sellall') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            SellAllCommand(message, currency, commandArgs, CurrencyShop, Users);
+            SellAllCommand(message, Currency, commandArgs, CurrencyShop, Users);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -296,7 +296,7 @@ client.on('message', async message => {
     else if (command === 'leaderboard') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            LeaderboardCommand(message, currency, client);
+            LeaderboardCommand(message, Currency, client);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -427,7 +427,7 @@ client.on('message', async message => {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
             if(commandArgs === 'me lol') {
-                currency.add(message.author.id, 100);
+                Currency.add(message.author.id, 100);
                 return message.channel.send(`${message.author.tag}, you got 100 :coin:`);
             }
         }
@@ -439,7 +439,7 @@ client.on('message', async message => {
     else if (command === 'debug') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            DebugCommand(Users, message, currency);
+            DebugCommand(Users, message, Currency);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
@@ -459,7 +459,7 @@ client.on('message', async message => {
     else if (command === 'attack') {
         try {
             Logger.cmd(`${message.author.tag} executed '${command}' command`);
-            AttackCommand(message, Users, currency, timestamps, now, cooldownAmount, Enemies);
+            AttackCommand(message, Users, Currency, timestamps, now, cooldownAmount, Enemies);
         }
         catch (error) {
             Logger.error(`Caught error while executing '${command}' command: ${error}`);
