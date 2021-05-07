@@ -6,13 +6,8 @@ exports.name = 'craft';
 exports.description = 'Craft item';
 // eslint-disable-next-line no-unused-vars
 exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
-    let item = '';
-    if(commandArgs === 'axe' || commandArgs === 'Axe') {
-        item = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Axe' } } });
-    }
-    else {
-        item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` } } });
-    }
+    const item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` } } });
+
     if (!item) return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription('That item doesn\'t exist.'));
 
     const user = await Users.findOne({ where: { user_id: message.author.id } });
