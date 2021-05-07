@@ -1,4 +1,12 @@
 const Discord = require('discord.js');
+const fs = require('fs');
+const Commands = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    Commands.set(file.slice(0, -3), command);
+}
 
 exports.pleaseWait = function(message, timeLeft, time, command) {
     return(new Discord.MessageEmbed()
@@ -39,31 +47,7 @@ exports.gitHub = function() {
 };
 
 exports.help = function(prefix) {
-
-    const helpObj = [
-        { 'command': 'help', 'description': 'help command' },
-        { 'command': 'about', 'description': 'gives info about you/user' },
-        { 'command': 'mine', 'description': 'mine ores' },
-        { 'command': 'chop', 'description': 'chop wood' },
-        { 'command': 'fish', 'description': 'fish fishes' },
-        { 'command': 'cook', 'description': 'cook food' },
-        { 'command': 'smelt', 'description': 'smelt ores' },
-        { 'command': 'loot', 'description': 'loot items' },
-        { 'command': 'shop', 'description': 'see shop' },
-        { 'command': 'houseshop', 'description': 'see house shop' },
-        { 'command': 'buy', 'description': 'buy items' },
-        { 'command': 'buyhouse', 'description': 'buy house' },
-        { 'command': 'sell', 'description': 'sell items' },
-        { 'command': 'sellall', 'description': 'sell all type items' },
-        { 'command': 'attack', 'description': 'attack enemies' },
-        { 'command': 'eat', 'description': 'eat food' },
-        { 'command': 'mining', 'description': 'see mining stats' },
-        { 'command': 'woodcutting', 'description': 'see woodcutting stats' },
-        { 'command': 'smithing', 'description': 'see smithing stats' },
-        { 'command': 'smithing', 'description': 'see smithing stats' },
-    ];
-
     return(new Discord.MessageEmbed()
         .setTitle(':question: **Help** :question:')
-        .setDescription(helpObj.map((cmd) => `**${prefix}${cmd['command']}** - ${cmd['description']}`)));
+        .setDescription(Commands.map((cmd) => `**${prefix}${cmd.name}** - ${cmd.description}`)));
 };
