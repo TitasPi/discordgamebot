@@ -6,48 +6,48 @@ exports.name = 'craft';
 exports.description = 'Craft item';
 // eslint-disable-next-line no-unused-vars
 exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
-    const item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` } } });
+    const item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` } }, order: [['name', 'ASC']] });
 
     if (!item) return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription('That item doesn\'t exist.'));
 
     const user = await Users.findOne({ where: { user_id: message.author.id } });
 
-    if(item.name === 'Iron Axe' || item.name === 'Iron Pickaxe' || item.name === 'Copper Axe' || item.name === 'Copper Pickaxe' || item.name === 'Fishing Rod') {
-        // First crafting component
-        const logItem = await user.getUserLogs();
-        const woodItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: logItem } } });
-        const userWoodItem = await user.hasItem(woodItem);
+    const craftables = ['Iron Axe', 'Iron Pickaxe', 'Copper Axe', 'Copper Pickaxe', 'Fishing Rod'];
 
-        // Second crafting component
-        const secondComponent = await getSecondComponent(CurrencyShop, item.name);
-        const secondComponentAmount = await getSecondComponentAmount(item.name);
-        const userSecondComponent = await user.hasItem(secondComponent, secondComponentAmount);
+    if(!craftables.includes(item.name)) return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription('I can\'t craft that'));
 
-        let missing = '';
-        if(userSecondComponent && !userWoodItem) {
-            missing = '1x Log';
-        }
-        else if(!userSecondComponent && !userWoodItem) {
-            missing = `1x Log, ${secondComponentAmount}x ${secondComponent.name}`;
-        }
-        else if(!userSecondComponent && userWoodItem) {
-            missing = `${secondComponentAmount}x ${secondComponent.name}`;
-        }
-        if(missing !== '') {
-            return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You need to have \`${missing}\` to craft \`${getItemName(item)}\``));
-        }
+    // First crafting component
+    const logItem = await user.getUserLogs();
+    const woodItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: logItem } } });
+    const userWoodItem = await user.hasItem(woodItem);
 
-        await user.removeItem(woodItem);
-        await user.removeItem(secondComponent, secondComponentAmount);
-        await user.addItem(item);
-        const xp = random(1, 5);
-        user.crafting_skill += xp;
-        user.save();
-        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You crafted 1x **${getItemName(item)}** (used 1x **${getItemName(woodItem)}** and ${secondComponentAmount}x **${getItemName(secondComponent)}**). Gained ${xp}XP`));
+    // Second crafting component
+    const secondComponent = await getSecondComponent(CurrencyShop, item.name);
+    const secondComponentAmount = await getSecondComponentAmount(item.name);
+    const userSecondComponent = await user.hasItem(secondComponent, secondComponentAmount);
+
+    let missing = '';
+    if(userSecondComponent && !userWoodItem) {
+        missing = '1x Log';
     }
-    else {
-        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription('I can\'t craft that'));
+    else if(!userSecondComponent && !userWoodItem) {
+        missing = `1x Log, ${secondComponentAmount}x ${secondComponent.name}`;
     }
+    else if(!userSecondComponent && userWoodItem) {
+        missing = `${secondComponentAmount}x ${secondComponent.name}`;
+    }
+    if(missing !== '') {
+        return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You need to have \`${missing}\` to craft \`${getItemName(item)}\``));
+    }
+
+    await user.removeItem(woodItem);
+    await user.removeItem(secondComponent, secondComponentAmount);
+    await user.addItem(item);
+    const xp = random(1, 5);
+    user.crafting_skill += xp;
+    user.save();
+    return message.channel.send(new Discord.MessageEmbed().setTitle('Crafting').setDescription(`You crafted 1x **${getItemName(item)}** (used 1x **${getItemName(woodItem)}** and ${secondComponentAmount}x **${getItemName(secondComponent)}**). Gained ${xp}XP`));
+
 };
 
 async function getSecondComponent(CurrencyShop, itemName) {
