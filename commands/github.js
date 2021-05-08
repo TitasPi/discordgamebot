@@ -1,4 +1,4 @@
-const Embeds = require('../embeds');
+const Embeds = require('../utils/embeds');
 
 exports.name = 'github';
 exports.description = 'Shows bot repository';

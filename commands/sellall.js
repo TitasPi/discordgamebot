@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { Op } = require('sequelize');
-const { getItemName } = require('../utils');
+const { getItemName } = require('../utils/utils');
 
 exports.name = 'sellall';
 exports.description = 'Sell all items of one type';

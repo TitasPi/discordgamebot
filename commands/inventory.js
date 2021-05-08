@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { getItemName } = require('../utils');
+const { getItemName } = require('../utils/utils');
 
 exports.name = 'inventory';
 exports.description = 'Shows your inventory';

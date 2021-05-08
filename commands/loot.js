@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { random } = require('../utils');
+const { random } = require('../utils/utils');
 const { Op } = require('sequelize');
 
 exports.name = 'loot';

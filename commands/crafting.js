@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { getSkillLevel } = require('../utils');
+const { getSkillLevel } = require('../utils/utils');
 
 exports.name = 'crafting';
 exports.description = 'Shows crafting stats';

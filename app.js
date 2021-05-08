@@ -2,11 +2,11 @@ const config = require('./config');
 const Discord = require('discord.js');
 const fs = require('fs');
 
-const { random } = require('./utils');
-const Embeds = require('./embeds');
 const Web = require('./web/app');
-const Logger = require('./logger');
-const Cooldown = require('./cooldown');
+const { random } = require('./utils/utils');
+const Embeds = require('./utils/embeds');
+const Logger = require('./utils/logger');
+const Cooldown = require('./utils/cooldown');
 const package = require('./package.json');
 
 const client = new Discord.Client();

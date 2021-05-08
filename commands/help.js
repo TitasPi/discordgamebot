@@ -1,4 +1,4 @@
-const Embeds = require('../embeds');
+const Embeds = require('../utils/embeds');
 
 exports.name = 'help';
 exports.description = 'Shows help';

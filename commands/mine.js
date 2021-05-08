@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { random, getItemName, getSkillLevel } = require('../utils');
+const { random, getItemName, getSkillLevel } = require('../utils/utils');
 const { Op } = require('sequelize');
 
 exports.name = 'mine';

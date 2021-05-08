@@ -1,4 +1,4 @@
-const Embeds = require('../embeds');
+const Embeds = require('../utils/embeds');
 
 exports.name = 'balance';
 exports.description = 'Shows your balance';

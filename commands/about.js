@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { getMaxHP, getSkillLevel } = require('../utils');
+const { getMaxHP, getSkillLevel } = require('../utils/utils');
 
 exports.name = 'about';
 exports.description = 'Shows info about you';

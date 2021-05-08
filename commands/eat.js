@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { getSkillLevel, getMaxHP, getItemName } = require('../utils');
+const { getSkillLevel, getMaxHP, getItemName } = require('../utils/utils');
 const { Op } = require('sequelize');
 
 exports.name = 'eat';

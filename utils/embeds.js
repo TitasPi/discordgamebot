@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const Commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('../commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+    const command = require(`../commands/${file}`);
     Commands.set(file.slice(0, -3), command);
 }
 
