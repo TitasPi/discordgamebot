@@ -1,5 +1,6 @@
 console.time('execution');
 const Sequelize = require('sequelize');
+const Logger = require('./utils/logger');
 
 const sequelize = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
@@ -80,7 +81,7 @@ sequelize.sync({ force }).then(async () => {
         await CurrencyShop.upsert({ name: ':thread: String', category: 'Junk', buyPrice: 0, sellPrice: 2, buyable: 0, sellable: 1, stock: 0 }),
     ];
     await Promise.all(shop);
-    console.log('Database synced');
+    Logger.log('Database synced');
     sequelize.close();
     console.timeEnd('execution');
 }).catch(console.error);
