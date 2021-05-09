@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 exports.name = 'cook';
 exports.description = 'Cooks food';
 // eslint-disable-next-line no-unused-vars
-exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const item = await CurrencyShop.findOne({ where: { name: { [Op.like]: `%${commandArgs}%` }, category: 'Fishing' } });
     if (!item) return message.channel.send(new Discord.MessageEmbed().setTitle('Cooking').setDescription('That item doesn\'t exist.'));
     if(item.name !== 'Fishing Rod') {

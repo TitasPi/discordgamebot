@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 exports.name = 'loot';
 exports.description = 'Loot items';
 // eslint-disable-next-line no-unused-vars
-exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     if(user.action != 'Idle') {
         return message.channel.send(`You are currently \`${user.action}\``);

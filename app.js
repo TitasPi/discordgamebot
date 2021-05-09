@@ -10,7 +10,7 @@ const Cooldown = require('./utils/cooldown');
 const package = require('./package.json');
 
 const client = new Discord.Client();
-const { Users, CurrencyShop, HouseShop, UserItems, Enemies } = require('./dbObjects');
+const { Users, CurrencyShop, HouseShop, UserItems, Enemies, PetShop } = require('./dbObjects');
 const Currency = new Discord.Collection();
 const Cooldowns = new Discord.Collection();
 const Commands = new Discord.Collection();
@@ -117,7 +117,7 @@ client.on('message', async message => {
 
     try {
         Logger.cmd(`${message.author.tag} executed '${commandName}' command`);
-        command.execute(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client);
+        command.execute(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client);
     }
     catch(error) {
         Logger.error(`Caught error while executing '${commandName}' command: ${error}`);

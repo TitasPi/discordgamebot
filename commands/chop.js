@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 exports.name = 'chop';
 exports.description = 'Chops wood';
 // eslint-disable-next-line no-unused-vars
-exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     const axeItem = await CurrencyShop.findOne({ where: { name: { [Op.like]: 'Iron Axe' } } });
     const userAxe = await user.hasItem(axeItem);

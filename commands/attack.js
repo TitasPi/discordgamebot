@@ -5,7 +5,7 @@ const { Op, literal } = require('sequelize');
 exports.name = 'attack';
 exports.description = 'Attacks enemy';
 // eslint-disable-next-line no-unused-vars
-exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const user = await Users.findOne({ where: { user_id: message.author.id } });
     const attackLevel = getSkillLevel('Attack', user.attack_skill);
     let enemy = undefined;

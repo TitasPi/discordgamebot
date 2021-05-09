@@ -11,12 +11,15 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const Users = require('./models/Users')(sequelize, Sequelize.DataTypes);
 const CurrencyShop = require('./models/CurrencyShop')(sequelize, Sequelize.DataTypes);
 const HouseShop = require('./models/HouseShop')(sequelize, Sequelize.DataTypes);
+const PetShop = require('./models/PetShop')(sequelize, Sequelize.DataTypes);
 const UserItems = require('./models/UserItems')(sequelize, Sequelize.DataTypes);
 const UserHouses = require('./models/UserHouses')(sequelize, Sequelize.DataTypes);
+const UserPets = require('./models/UserPets')(sequelize, Sequelize.DataTypes);
 const Enemies = require('./models/Enemies')(sequelize, Sequelize.DataTypes);
 
 UserItems.belongsTo(CurrencyShop, { foreignKey: 'item_id', as: 'item' });
 UserHouses.belongsTo(HouseShop, { foreignKey: 'house_id', as: 'item' });
+UserPets.belongsTo(PetShop, { foreignKey: 'pet_id', as: 'item' });
 
 /* eslint-disable-next-line func-names */
 Users.prototype.addItem = async function(item, quantity = 1) {
@@ -160,4 +163,4 @@ Users.prototype.hasHouse = async function(house) {
     }
 };
 
-module.exports = { Users, CurrencyShop, UserItems, HouseShop, Enemies };
+module.exports = { Users, CurrencyShop, UserItems, HouseShop, Enemies, PetShop, UserPets };

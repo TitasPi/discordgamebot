@@ -3,7 +3,7 @@ const Embeds = require('../utils/embeds');
 exports.name = 'leaderboard';
 exports.description = 'Shows leaderboard';
 // eslint-disable-next-line no-unused-vars
-exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     return message.channel.send(Embeds.leaderboard(
         Currency.sort((a, b) => b.balance - a.balance)
             .filter(user => client.users.cache.has(user.user_id))

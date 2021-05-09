@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 exports.name = 'houses';
 exports.description = 'Shows your houses';
 // eslint-disable-next-line no-unused-vars
-exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const target = message.mentions.users.first() || message.author;
     const user = await Users.findOne({ where: { user_id: target.id } });
     const items = await user.getHouses();

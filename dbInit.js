@@ -10,10 +10,12 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 
 const CurrencyShop = require('./models/CurrencyShop')(sequelize, Sequelize.DataTypes);
 const HouseShop = require('./models/HouseShop')(sequelize, Sequelize.DataTypes);
+const PetShop = require('./models/PetShop')(sequelize, Sequelize.DataTypes);
 const Enemies = require('./models/Enemies')(sequelize, Sequelize.DataTypes);
 require('./models/Users')(sequelize, Sequelize.DataTypes);
 require('./models/UserItems')(sequelize, Sequelize.DataTypes);
 require('./models/UserHouses')(sequelize, Sequelize.DataTypes);
+require('./models/UserPets')(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 
@@ -26,7 +28,19 @@ sequelize.sync({ force }).then(async () => {
         await HouseShop.upsert({ name: 'Homeless', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
         await HouseShop.upsert({ name: 'Small cardboard box', buyPrice: 50, sellPrice: 30, buyable: 1, sellable: 1, stock: 5 }),
         await HouseShop.upsert({ name: 'Dog house', buyPrice: 60, sellPrice: 45, buyable: 1, sellable: 1, stock: 5 }),
+        await HouseShop.upsert({ name: 'Tent', buyPrice: 100, sellPrice: 60, buyable: 1, sellable: 1, stock: 5 }),
         await HouseShop.upsert({ name: 'One room apartment', buyPrice: 250, sellPrice: 230, buyable: 1, sellable: 1, stock: 5 }),
+
+        await PetShop.upsert({ name: '🐶 Dog (Poodle)', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🐕‍🦺 Dog (German Shepherd)', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🐱 Cat', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🐢 Turtle', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🐍 Snake', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🐌 Snail', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🦊 Fox', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🦄 Unicorn (VIP)', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🐲 Dragon (VIP)', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
+        await PetShop.upsert({ name: '🐰 Rabbit', buyPrice: 0, sellPrice: 0, buyable: 0, sellable: 0, stock: 0 }),
 
         // await CurrencyShop.upsert({ name: '🍵 Tea', category: 'Food', buyPrice: 1, sellPrice: 0, buyable: 1, sellable: 0, healing: 2, stock: 0 }),
         // await CurrencyShop.upsert({ name: '☕ Coffee', category: 'Food', buyPrice: 2, sellPrice: 0, buyable: 1, sellable: 0, healing: 3, stock: 0 }),

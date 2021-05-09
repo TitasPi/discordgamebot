@@ -4,7 +4,7 @@ const { getMaxHP, getSkillLevel } = require('../utils/utils');
 exports.name = 'about';
 exports.description = 'Shows info about you';
 // eslint-disable-next-line no-unused-vars
-exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
+exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const target = message.mentions.users.first() || message.author;
     const user = await Users.findOne({ where: { user_id: target.id } });
     let house = 'Homeless';
