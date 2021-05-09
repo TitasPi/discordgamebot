@@ -3,23 +3,23 @@ const fs = require('fs');
 const colors = require('colors');
 
 exports.log = function(message) {
-    if(!fs.existsSync('../logs')) {
-        fs.mkdirSync('../logs');
+    if(!fs.existsSync('./logs')) {
+        fs.mkdirSync('./logs');
     }
-    if(!fs.existsSync(`../logs/${getFileName()}`)) {
-        fs.writeFileSync(`../logs/${getFileName()}`, '');
+    if(!fs.existsSync(`./logs/${getFileName()}`)) {
+        fs.writeFileSync(`./logs/${getFileName()}`, '');
     }
-    fs.appendFileSync(`../logs/${getFileName()}`, `${getDate()} [INFO]: ${message}\n`);
+    fs.appendFileSync(`./logs/${getFileName()}`, `${getDate()} [INFO]: ${message}\n`);
     console.log(`${getDate()} [INFO]: ${message}`.yellow);
 };
 exports.error = function(message) {
-    if(!fs.existsSync('../logs')) {
-        fs.mkdirSync('../logs');
+    if(!fs.existsSync('./logs')) {
+        fs.mkdirSync('./logs');
     }
-    if(!fs.existsSync(`../logs/${getFileName()}`)) {
-        fs.writeFileSync(`../logs/${getFileName()}`, '');
+    if(!fs.existsSync(`./logs/${getFileName()}`)) {
+        fs.writeFileSync(`./logs/${getFileName()}`, '');
     }
-    fs.appendFileSync(`../logs/${getFileName()}`, `${getDate()} [ERR ]: ${message}\n`);
+    fs.appendFileSync(`./logs/${getFileName()}`, `${getDate()} [ERR ]: ${message}\n`);
     console.log(`${getDate()} [ERR ]: ${message}`.red);
 };
 exports.cmd = function(message) {
