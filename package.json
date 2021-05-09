@@ -8,7 +8,8 @@
     "url": "https://github.com/TitasPi/discordgamebot.git"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "migrate": "node dbInit.js"
   },
   "author": "Titas",
   "license": "GNU GPLv3",
