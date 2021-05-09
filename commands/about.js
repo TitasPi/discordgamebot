@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
 const { getMaxHP, getSkillLevel } = require('../utils/utils');
+const Embeds = require('../utils/embeds');
 
 exports.name = 'about';
 exports.description = 'Shows info about you';
@@ -7,43 +7,31 @@ exports.description = 'Shows info about you';
 exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const target = message.mentions.users.first() || message.author;
     const user = await Users.findOne({ where: { user_id: target.id } });
-    let house = 'Homeless';
-    let health = 10;
-    let woodcutting_skillXP = 0;
-    let mining_skillXP = 0;
-    let fishing_skillXP = 0;
-    let cooking_skillXP = 0;
-    let smithing_skillXP = 0;
-    let crafting_skillXP = 0;
-    let attack_skillXP = 0;
-    let hitpoint_skillXP = 0;
-    if(user) {
-        house = user.house;
-        health = user.health;
-        woodcutting_skillXP = user.woodcutting_skill;
-        mining_skillXP = user.mining_skill;
-        fishing_skillXP = user.fishing_skill;
-        cooking_skillXP = user.cooking_skill;
-        smithing_skillXP = user.smithing_skill;
-        crafting_skillXP = user.crafting_skill;
-        attack_skillXP = user.attack_skill;
-        hitpoint_skillXP = user.hitpoint_skill;
-    }
 
-    const aboutUser = new Discord.MessageEmbed().setTitle(`About ${target.tag}`);
-    aboutUser.addField(`Information about ${target.tag}`, '\u200b');
-    aboutUser.addField(':coin: Coins', `${Currency.getBalance(target.id)} :coin:`, true);
-    aboutUser.addField('❤ Health', `${health}/${getMaxHP(getSkillLevel('Hitpoints', hitpoint_skillXP))}`, true);
-    aboutUser.addField('Skills', '\u200b');
-    aboutUser.addField('⛏ Mining', `${mining_skillXP}XP | ${getSkillLevel('Mining', mining_skillXP)} Level`, true);
-    aboutUser.addField('🪓 Woodcutting', `${woodcutting_skillXP}XP | ${getSkillLevel('Woodcutting', woodcutting_skillXP)} Level`, true);
-    aboutUser.addField('🎣 Fishing', `${fishing_skillXP}XP | ${getSkillLevel('Fishing', fishing_skillXP)} Level`, true);
-    aboutUser.addField('🍳 Cooking', `${cooking_skillXP}XP | ${getSkillLevel('Cooking', cooking_skillXP)} Level`, true);
-    aboutUser.addField('🔥 Smithing', `${smithing_skillXP}XP | ${getSkillLevel('Smithing', smithing_skillXP)} Level`, true);
-    aboutUser.addField('⚒ Crafting', `${crafting_skillXP}XP | ${getSkillLevel('Crafting', crafting_skillXP)} Level`, true);
-    aboutUser.addField('⚔ Attack', `${attack_skillXP}XP | ${getSkillLevel('Attack', crafting_skillXP)} Level`, true);
-    aboutUser.addField('♥ Hitpoints', `${hitpoint_skillXP}XP | ${getSkillLevel('Hitpoints', crafting_skillXP)} Level`, true);
-    aboutUser.addField('🏠 House', house);
+    const woodcutting_skillXP = user.woodcutting_skill || 0;
+    const mining_skillXP = user.mining_skill || 0;
+    const fishing_skillXP = user.fishing_skill || 0;
+    const cooking_skillXP = user.cooking_skill || 0;
+    const smithing_skillXP = user.smithing_skill || 0;
+    const crafting_skillXP = user.crafting_skill || 0;
+    const attack_skillXP = user.attack_skill || 0;
+    const hitpoint_skillXP = user.hitpoint_skill || 0;
 
-    return message.channel.send(aboutUser);
+    const userData = {
+        'tag': target.tag,
+        'id': target.id,
+        'house': user.house || 'Homeless',
+        'health': user.health || 10,
+        'maxHealth': getMaxHP(getSkillLevel('Hitpoints', hitpoint_skillXP)),
+        'woodcutting_skill': [woodcutting_skillXP, getSkillLevel('Woodcutting', woodcutting_skillXP)],
+        'mining_skill': [mining_skillXP, getSkillLevel('Mining', mining_skillXP)],
+        'fishing_skill': [fishing_skillXP, getSkillLevel('Fishing', fishing_skillXP)],
+        'cooking_skill': [cooking_skillXP, getSkillLevel('Cooking', cooking_skillXP)],
+        'smithing_skill': [smithing_skillXP, getSkillLevel('Smithing', smithing_skillXP)],
+        'crafting_skill': [crafting_skillXP, getSkillLevel('Crafting', crafting_skillXP)],
+        'attack_skill': [attack_skillXP, getSkillLevel('Attack', attack_skillXP)],
+        'hitpoint_skill': [hitpoint_skillXP, getSkillLevel('Hitpoints', hitpoint_skillXP)],
+    };
+
+    return message.channel.send(Embeds.about(userData, Currency));
 };

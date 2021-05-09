@@ -51,3 +51,21 @@ exports.help = function(prefix) {
         .setTitle(':question: **Help** :question:')
         .setDescription(Commands.map((cmd) => `**${prefix}${cmd.name}** - ${cmd.description}`)));
 };
+
+exports.about = function(userData, Currency) {
+    return(new Discord.MessageEmbed()
+        .setTitle(`About ${userData.tag}`)
+        .addField(`Information about ${userData.tag}`, '\u200b')
+        .addField(':coin: Coins', `${Currency.getBalance(userData.id)} :coin:`, true)
+        .addField('❤ Health', `${userData.health}/${userData.maxHealth}`, true)
+        .addField('Skills', '\u200b')
+        .addField('⛏ Mining', `${userData.mining_skill[0]}XP | ${userData.mining_skill[1]} Level`, true)
+        .addField('🪓 Woodcutting', `${userData.woodcutting_skill[0]}XP | ${userData.woodcutting_skill[1]} Level`, true)
+        .addField('🎣 Fishing', `${userData.fishing_skill[0]}XP | ${userData.fishing_skill[1]} Level`, true)
+        .addField('🍳 Cooking', `${userData.cooking_skill[0]}XP | ${userData.cooking_skill[1]} Level`, true)
+        .addField('🔥 Smithing', `${userData.smithing_skill[0]}XP | ${userData.smithing_skill[1]} Level`, true)
+        .addField('⚒ Crafting', `${userData.crafting_skill[0]}XP | ${userData.crafting_skill[1]} Level`, true)
+        .addField('⚔ Attack', `${userData.attack_skill[0]}XP | ${userData.attack_skill[1]} Level`, true)
+        .addField('♥ Hitpoints', `${userData.hitpoint_skill[0]}XP | ${userData.hitpoint_skill[1]} Level`, true)
+        .addField('🏠 House', userData.house));
+};
