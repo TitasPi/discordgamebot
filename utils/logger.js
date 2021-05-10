@@ -23,13 +23,13 @@ exports.error = function(message) {
     console.log(`${getDate()} [ERR ]: ${message}`.red);
 };
 exports.cmd = function(message) {
-    if(!fs.existsSync('../logs')) {
-        fs.mkdirSync('../logs');
+    if(!fs.existsSync('./logs')) {
+        fs.mkdirSync('./logs');
     }
-    if(!fs.existsSync(`../logs/${getFileName()}`)) {
-        fs.writeFileSync(`../logs/${getFileName()}`, '');
+    if(!fs.existsSync(`./logs/${getFileName()}`)) {
+        fs.writeFileSync(`./logs/${getFileName()}`, '');
     }
-    fs.appendFileSync(`../logs/${getFileName()}`, `${getDate()} [CMD ]: ${message}\n`);
+    fs.appendFileSync(`./logs/${getFileName()}`, `${getDate()} [CMD ]: ${message}\n`);
     console.log(`${getDate()} [CMD ]: ${message}`.green);
 };
 
