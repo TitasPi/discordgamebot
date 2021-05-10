@@ -53,11 +53,13 @@ exports.help = function(prefix) {
 };
 
 exports.about = function(userData, Currency) {
+    const userTag = userData.vip ? `✨[VIP]${userData.tag}✨` : `${userData.tag}`;
     return(new Discord.MessageEmbed()
-        .setTitle(`About ${userData.tag}`)
-        .addField(`Information about ${userData.tag}`, '\u200b')
+        .setTitle(`About ${userTag}`)
+        .addField(`Information about ${userTag}`, '\u200b')
         .addField(':coin: Coins', `${Currency.getBalance(userData.id)} :coin:`, true)
         .addField('❤ Health', `${userData.health}/${userData.maxHealth}`, true)
+        .addField('🐶 Pets', 'WIP')
         .addField('Skills', '\u200b')
         .addField('⛏ Mining', `${userData.mining_skill[0]}XP | ${userData.mining_skill[1]} Level`, true)
         .addField('🪓 Woodcutting', `${userData.woodcutting_skill[0]}XP | ${userData.woodcutting_skill[1]} Level`, true)
@@ -67,5 +69,9 @@ exports.about = function(userData, Currency) {
         .addField('⚒ Crafting', `${userData.crafting_skill[0]}XP | ${userData.crafting_skill[1]} Level`, true)
         .addField('⚔ Attack', `${userData.attack_skill[0]}XP | ${userData.attack_skill[1]} Level`, true)
         .addField('♥ Hitpoints', `${userData.hitpoint_skill[0]}XP | ${userData.hitpoint_skill[1]} Level`, true)
-        .addField('🏠 House', userData.house));
+        .addField('🏠 Houses', userData.houses));
+};
+
+exports.message = function(title, description) {
+    return(new Discord.MessageEmbed().setTitle(title).setDescription(description));
 };

@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+const { Client, User } = require('discord.js');
 /**
  * Calculates and returns skill level
  * @param {String} skill Woodcutting, Mining, Fishing, Smithing, Cooking, Crafting, Attack, Hitpoints
@@ -73,4 +75,18 @@ exports.getItemName = function(item) {
  */
 exports.random = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+/**
+ * Checks if user is VIP
+ * @param {Client} client Discord client
+ * @param {User} user User to be checked
+ */
+exports.checkVIP = async function(client, user) {
+    const checkUserInServer = await client.guilds.fetch('547518989866237952').then(guild => guild.member(user.id));
+    let userHasVIPRole = false;
+    if(checkUserInServer) {
+        userHasVIPRole = await checkUserInServer.roles.cache.has('547775028628815872');
+    }
+    return userHasVIPRole;
 };

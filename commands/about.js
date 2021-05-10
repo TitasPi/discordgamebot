@@ -1,4 +1,4 @@
-const { getMaxHP, getSkillLevel } = require('../utils/utils');
+const { getMaxHP, getSkillLevel, checkVIP } = require('../utils/utils');
 const Embeds = require('../utils/embeds');
 
 exports.name = 'about';
@@ -7,6 +7,8 @@ exports.description = 'Shows info about you';
 exports.execute = async function(message, commandArgs, Users, Enemies, UserItems, Currency, HouseShop, CurrencyShop, PetShop, PREFIX, VERSION, timestamps, now, cooldownAmount, client) {
     const target = message.mentions.users.first() || message.author;
     const user = await Users.findOne({ where: { user_id: target.id } });
+    const userHouses = await user.getHouses();
+    const houses = userHouses.map(house => house.item.name).join(', ');
 
     const woodcutting_skillXP = user.woodcutting_skill || 0;
     const mining_skillXP = user.mining_skill || 0;
@@ -20,7 +22,8 @@ exports.execute = async function(message, commandArgs, Users, Enemies, UserItems
     const userData = {
         'tag': target.tag,
         'id': target.id,
-        'house': user.house || 'Homeless',
+        'vip': await checkVIP(client, target),
+        'houses': houses || 'Homeless',
         'health': user.health || 10,
         'maxHealth': getMaxHP(getSkillLevel('Hitpoints', hitpoint_skillXP)),
         'woodcutting_skill': [woodcutting_skillXP, getSkillLevel('Woodcutting', woodcutting_skillXP)],
